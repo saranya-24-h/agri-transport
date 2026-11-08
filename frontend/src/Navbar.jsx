@@ -5,7 +5,13 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   return (
     <div className='nav'>
-      <Link to='/' style={{ marginLeft: 0, fontWeight: 'bold', fontSize: 18 }}>AgriTransport</Link>
+      <Link
+        to='/'
+        style={{ marginLeft: 0, fontWeight: 'bold', fontSize: 18, display: 'flex', alignItems: 'center', gap: 8 }}
+      >
+        <img src='/logo.svg' alt='AgriTransport logo' height='52' width='52' />
+        AgriTransport
+      </Link>
       <div>
         <Link to='/'>Home</Link>
         {user ? (
