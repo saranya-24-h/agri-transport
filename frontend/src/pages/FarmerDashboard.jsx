@@ -4,6 +4,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import StatusBadge from '../StatusBadge';
 import { STORES, storeLabel } from '../data/stores';
+import { formatPrice } from '../data/pricing';
 
 export default function FarmerDashboard() {
   const { user } = useAuth();
@@ -51,7 +52,7 @@ export default function FarmerDashboard() {
         quantityKg: Number(form.quantityKg),
       });
       setSuccess('Shipment request created successfully.');
-      setForm({ pickupLocation: '', dropLocation: '', produce: '', quantityKg: '' });
+      setForm({ pickupLocation: '', dropLocation: '', produce: '', quantityKg: ''});
       loadShipments();
     } catch (err) {
       setError(err.response?.data?.errors?.[0]?.msg || err.response?.data?.message || 'Failed to create shipment');
@@ -130,6 +131,7 @@ export default function FarmerDashboard() {
                   <th>Qty (Kg)</th>
                   <th>Transporter</th>
                   <th>Vehicle</th>
+                  <th>Price</th>
                   <th>Status</th>
                   <th>History</th>
                 </tr>
@@ -143,6 +145,7 @@ export default function FarmerDashboard() {
                     <td>{s.quantityKg}</td>
                     <td>{s.transporter?.name || '-'}</td>
                     <td>{s.vehicleType || '-'}</td>
+                    <td>{formatPrice(s.price)}</td>
                     <td><StatusBadge status={s.status} /></td>
                     <td>
                       <Link to={`/shipment/${s._id}`}>View</Link>

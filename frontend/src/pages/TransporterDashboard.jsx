@@ -4,6 +4,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import StatusBadge from '../StatusBadge';
 import { suitableVehicles } from '../data/vehicles';
+import { estimatePrice, formatPrice } from '../data/pricing';
 
 export default function TransporterDashboard() {
   const { user } = useAuth();
@@ -67,6 +68,7 @@ export default function TransporterDashboard() {
                 <th>Drop</th>
                 <th>Qty (Kg)</th>
                 <th>Vehicle</th>
+                <th>Est. Price</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -91,6 +93,7 @@ export default function TransporterDashboard() {
                         ))}
                       </select>
                     </td>
+                    <td>{formatPrice(estimatePrice(selected, s.quantityKg))}</td>
                     <td>
                       <button onClick={() => handleAction(s._id, 'accept', { vehicleType: selected })}>
                         Accept
@@ -119,6 +122,7 @@ export default function TransporterDashboard() {
                 <th>Drop</th>
                 <th>Qty (Kg)</th>
                 <th>Vehicle</th>
+                <th>Price</th>
                 <th>Status</th>
                 <th>Action</th>
                 <th>History</th>
@@ -132,6 +136,7 @@ export default function TransporterDashboard() {
                   <td>{s.dropLocation}</td>
                   <td>{s.quantityKg}</td>
                   <td>{s.vehicleType || '-'}</td>
+                  <td>{formatPrice(s.price)}</td>
                   <td><StatusBadge status={s.status} /></td>
                   <td>
                     {s.status === 'Accepted' && (

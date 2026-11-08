@@ -13,10 +13,10 @@ const populateOpts = [
 
 // Vehicle capacity rules (must match frontend/src/data/vehicles.js)
 const VEHICLES = [
-  { name: 'Mini Truck', maxKg: 750 },
-  { name: 'Pickup Truck', maxKg: 1500 },
-  { name: 'Refrigerated Truck', maxKg: 3000 },
-  { name: 'Tractor Trailer', maxKg: Infinity }
+  { name: 'Mini Truck', maxKg: 750, base: 300, perKg: 4 },
+  { name: 'Pickup Truck', maxKg: 1500, base: 500, perKg: 3.5 },
+  { name: 'Refrigerated Truck', maxKg: 3000, base: 1000, perKg: 5 },
+  { name: 'Tractor Trailer', maxKg: Infinity, base: 1500, perKg: 2.5 }
 ];
 
 // Farmer creates a transport request (chain first, then database)
@@ -77,6 +77,7 @@ const transition = (from, to, note) => async (req, res) => {
       }
       shipment.transporter = req.user.id;
       shipment.vehicleType = vehicle.name;
+      shipment.price = Math.round(vehicle.base + vehicle.perKg * shipment.quantityKg);
       eventNote = note + ' using ' + vehicle.name;
     } else if (String(shipment.transporter) !== req.user.id) {
       return res.status(403).json({ message: 'This shipment is not assigned to you' });
