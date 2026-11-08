@@ -20,13 +20,21 @@ Mini Project, Batch D13.
 | Database | MongoDB Atlas |
 | Blockchain | Solidity, Hardhat, ethers.js |
 
-## Vehicle Selection
-| Vehicle | Max load |
-|---|---|
-| Mini Truck | 750 kg |
-| Pickup Truck | 1500 kg |
-| Refrigerated Truck | 3000 kg |
-| Tractor Trailer | 3000 kg and above |
+## Vehicle Selection and Pricing
+The transporter chooses a vehicle suited to the quantity. The backend enforces the capacity limit and calculates the price:
+
+**Price = base fee + rate per kg × quantity**
+
+| Vehicle | Max load | Base fee | Rate per kg |
+|---|---|---|---|
+| Mini Truck | 750 kg | ₹300 | ₹4 |
+| Pickup Truck | 1500 kg | ₹500 | ₹3.5 |
+| Refrigerated Truck | 3000 kg | ₹1000 | ₹5 |
+| Tractor Trailer | above 3000 kg | ₹1500 | ₹2.5 |
+
+Example for 2000 kg: Refrigerated Truck = ₹11,000, Tractor Trailer = ₹6,500.
+
+The rates are sample values for the demo, not real market prices. The price is stored in MongoDB, not on the blockchain. Only the status events are on-chain.
 
 ## Project Structure
 ```
