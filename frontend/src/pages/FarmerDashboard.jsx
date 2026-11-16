@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import StatusBadge from '../StatusBadge';
-import { STORES, storeLabel } from '../data/stores';
+import { ROADS, STORES, storeLabel } from '../data/stores';
 import { formatPrice } from '../data/pricing';
 
 export default function FarmerDashboard() {
@@ -12,6 +12,7 @@ export default function FarmerDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [dropType, setDropType] = useState('road');
 
   const [form, setForm] = useState({
     pickupLocation: '',
@@ -40,6 +41,11 @@ export default function FarmerDashboard() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const switchDropType = (type) => {
+    setDropType(type);
+    setForm((prev) => ({ ...prev, dropLocation: '' }));
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
     setError('');
@@ -52,12 +58,14 @@ export default function FarmerDashboard() {
         quantityKg: Number(form.quantityKg),
       });
       setSuccess('Shipment request created successfully.');
-      setForm({ pickupLocation: '', dropLocation: '', produce: '', quantityKg: ''});
+      setForm({ pickupLocation: '', dropLocation: '', produce: '', quantityKg: '' });
       loadShipments();
     } catch (err) {
       setError(err.response?.data?.errors?.[0]?.msg || err.response?.data?.message || 'Failed to create shipment');
     }
   };
+
+  const dropOptions = dropType === 'road' ? ROADS : STORES;
 
   return (
     <div className="container">
@@ -72,28 +80,64 @@ export default function FarmerDashboard() {
           <input
             type="text"
             name="pickupLocation"
-            placeholder="Pickup Location"
+            placeholder="Pickup Location (Remote Farm / Village)"
             value={form.pickupLocation}
             onChange={handleChange}
             required
           />
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '4px 0 6px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 13, color: '#444' }}>Drop-off Type:</span>
+            <button
+              type="button"
+              onClick={() => switchDropType('road')}
+              style={{
+                padding: '5px 12px',
+                fontSize: 13,
+                background: dropType === 'road' ? '#2e7d32' : '#e8f5e9',
+                color: dropType === 'road' ? '#fff' : '#2e7d32',
+                border: '1px solid #2e7d32'
+              }}
+            >
+              🛣️ Motorable Road
+            </button>
+            <button
+              type="button"
+              onClick={() => switchDropType('store')}
+              style={{
+                padding: '5px 12px',
+                fontSize: 13,
+                background: dropType === 'store' ? '#2e7d32' : '#e8f5e9',
+                color: dropType === 'store' ? '#fff' : '#2e7d32',
+                border: '1px solid #2e7d32'
+              }}
+            >
+              🏬 Store
+            </button>
+          </div>
+
           <input
             type="text"
             name="dropLocation"
-            list="store-options"
-            placeholder="Drop Location (type or pick a store)"
+            list="drop-options"
+            placeholder={
+              dropType === 'road'
+                ? 'Nearest Motorable Road (type or pick junction)'
+                : 'Drop Location (type or pick a Hyderabad store)'
+            }
             value={form.dropLocation}
             onChange={handleChange}
             autoComplete="off"
             required
           />
-          <datalist id="store-options">
-            {STORES.map((s) => (
+          <datalist id="drop-options">
+            {dropOptions.map((s) => (
               <option key={s.id} value={storeLabel(s)}>
                 {s.distanceKm} km away
               </option>
             ))}
           </datalist>
+
           <input
             type="text"
             name="produce"
@@ -126,8 +170,8 @@ export default function FarmerDashboard() {
               <thead>
                 <tr>
                   <th>Produce</th>
-                  <th>Pickup</th>
-                  <th>Drop</th>
+                  <th>Pickup (Farm)</th>
+                  <th>Drop Location</th>
                   <th>Qty (Kg)</th>
                   <th>Transporter</th>
                   <th>Vehicle</th>
