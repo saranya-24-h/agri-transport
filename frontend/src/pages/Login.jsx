@@ -19,6 +19,12 @@ function EyeIcon({ hide }) {
   );
 }
 
+const DEMO_ACCOUNTS = [
+  { label: 'Demo Farmer', email: 'farmer@agri.com', pass: 'Farmer@123' },
+  { label: 'Demo Transporter', email: 'transporter@agri.com', pass: 'Transporter@123' },
+  { label: 'Demo Admin', email: 'admin@agri.com', pass: 'Admin@123' }
+];
+
 export default function Login() {
   const { login } = useAuth();
   const nav = useNavigate();
@@ -34,6 +40,17 @@ export default function Login() {
       nav('/' + u.role);
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
+    }
+  };
+
+  const demoLogin = async (email, password) => {
+    setError('');
+    setForm({ email, password });
+    try {
+      const u = await login(email, password);
+      nav('/' + u.role);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Demo login failed');
     }
   };
 
@@ -82,7 +99,24 @@ export default function Login() {
         {error && <p className='error'>{error}</p>}
         <button type='submit'>Login</button>
       </form>
-      <p>No account? <Link to='/register'>Register</Link></p>
+
+      <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid #e5e7eb' }}>
+        <p style={{ fontSize: 13, color: '#555', marginBottom: 8 }}>Quick Demo Login:</p>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {DEMO_ACCOUNTS.map((acc) => (
+            <button
+              key={acc.label}
+              type='button'
+              onClick={() => demoLogin(acc.email, acc.pass)}
+              style={{ flex: 1, fontSize: 13, padding: '8px 10px' }}
+            >
+              {acc.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <p style={{ marginTop: 14 }}>No account? <Link to='/register'>Register</Link></p>
     </div>
   );
 }
