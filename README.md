@@ -4,6 +4,23 @@ A full-stack app for transporting agricultural produce. Shipment events are reco
 
 Mini Project, Batch D13.
 
+## Live Demo
+
+- **App:** https://agri-transport-three.vercel.app
+- **Backend API:** https://agri-transport-ptri.onrender.com
+- **Smart contract (Sepolia testnet):** https://sepolia.etherscan.io/address/0x8248CDcc27a1bd4503C0C863A912bE4D78D8c269
+
+**How to try it:**
+1. Open the app and register as a **Farmer** and as a **Transporter** (use two browsers, or log out in between).
+2. As the Farmer, create a shipment request.
+3. As the Transporter, choose a vehicle, accept, mark picked up, and mark delivered.
+4. Open the shipment history to see every step recorded on the blockchain.
+
+**Notes:**
+- The backend runs on a free plan and sleeps when idle, so the first load can take 30 to 60 seconds.
+- Every action is a real transaction on the Sepolia test network, using test ETH only.
+- Please use sample data only.
+
 ## Features
 - Three roles: **Farmer**, **Transporter**, **Admin**
 - Farmer creates a shipment and picks a drop location (sample Hyderabad stores)
