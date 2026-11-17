@@ -17,7 +17,8 @@ app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
-
+app.get('/', (req, res) => res.send('AgriTransport API'));
+app.get('/health', (req, res) => res.json({ ok: true }));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/shipments', require('./routes/shipments'));
 app.use('/api/admin', require('./routes/admin'));
