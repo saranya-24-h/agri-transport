@@ -69,6 +69,7 @@ export default function FarmerDashboard() {
         {error && <p className="error">{error}</p>}
         {success && <p className="ok">{success}</p>}
         <form onSubmit={handleCreate}>
+          <label style={{ display: 'block', fontWeight: 600, marginTop: 6 }}>Pickup Location</label>
           <input
             type="text"
             name="pickupLocation"
@@ -77,6 +78,7 @@ export default function FarmerDashboard() {
             onChange={handleChange}
             required
           />
+          <label style={{ display: 'block', fontWeight: 600, marginTop: 6 }}>Drop Location (type or pick a store)</label>
           <input
             type="text"
             name="dropLocation"
@@ -94,6 +96,7 @@ export default function FarmerDashboard() {
               </option>
             ))}
           </datalist>
+          <label style={{ display: 'block', fontWeight: 600, marginTop: 6 }}>Produce / Crop Type</label>
           <input
             type="text"
             name="produce"
@@ -102,6 +105,7 @@ export default function FarmerDashboard() {
             onChange={handleChange}
             required
           />
+          <label style={{ display: 'block', fontWeight: 600, marginTop: 6 }}>Quantity (Kg)</label>
           <input
             type="number"
             name="quantityKg"

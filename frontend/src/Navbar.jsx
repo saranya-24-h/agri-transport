@@ -17,7 +17,7 @@ export default function Navbar() {
         {user ? (
           <>
             <Link to={'/' + user.role}>Dashboard</Link>
-            <span style={{ marginLeft: 14 }}>{user.name} ({user.role})</span>
+            <span style={{ marginLeft: 14 }}>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span>
             <Link to='/login' onClick={logout}>Logout</Link>
           </>
         ) : (
